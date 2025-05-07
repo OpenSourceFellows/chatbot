@@ -1,4 +1,4 @@
-# RuralLearn LMS
+# Chatbot LMS
 
 _Reimagining education for rural communities with a mobile-first, SMS-enabled experience._
 
@@ -28,5 +28,5 @@ _How we’ll grow:_ integrate more civic tech toolkits, expand to voice & USSD, 
 
 ```bash
 git clone https://github.com/YourOrg/rurallearn.git
-cd rurallearn
+cd chatbot
 npm install
