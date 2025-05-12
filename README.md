@@ -27,6 +27,6 @@ _How we’ll grow:_ integrate more civic tech toolkits, expand to voice & USSD, 
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/YourOrg/rurallearn.git
+git clone https://github.com/OpenSourceFellows/chatbot
 cd chatbot
 npm install
