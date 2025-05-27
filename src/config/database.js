@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     host: envConfig.host,
     port: envConfig.port,
     dialect: envConfig.dialect,
-    logging: envConfig.logging,
+    logging: false,
     pool: envConfig.pool,
     dialectOptions: envConfig.dialectOptions,  
   },
