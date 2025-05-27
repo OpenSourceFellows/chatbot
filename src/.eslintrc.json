@@ -1,4 +1,0 @@
-{
-  "extends": ["eslint:recommended", "prettier", "plugin:vue/vue3-recommended"],
-  "rules": {}
-}
