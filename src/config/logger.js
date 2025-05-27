@@ -1,10 +1,13 @@
 const winston = require('winston');
+const config = require('./config');
+
 const { format, createLogger, transports } = winston;
 const { printf, combine, timestamp, colorize, uncolorize } = format;
-const config = require('./config');
+
 const winstonFormat = printf(({ level, message, timestamp, stack }) => {
   return `${timestamp}: ${level}: ${stack || message}`;
 });
+
 const logger = createLogger({
   level: config.env === 'development' ? 'debug' : 'info',
   format: combine(
@@ -14,4 +17,5 @@ const logger = createLogger({
   ),
   transports: [new transports.Console()],
 });
-module.exports = logger;
+
+module.exports = logger; 

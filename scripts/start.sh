@@ -16,4 +16,4 @@ echo "1/2: Spinning up container..."
 docker compose -f .docker/docker-compose.yml up -d
 
 echo "2/2: Entering container..."
-docker exec -it ai-chatbot-app /bin/sh
+docker exec -it chatbot_server /bin/sh

@@ -1,0 +1,7 @@
+{
+    "ignore": ["node_modules"],
+    "watch": ["src"],
+   
+    "ext": "js",
+    "legacyWatch": true
+  }

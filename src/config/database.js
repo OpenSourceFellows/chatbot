@@ -1,22 +1,45 @@
-const config = require("./config");
-const { Sequelize } = require("sequelize");
+const { Sequelize } = require('sequelize');
+const logger = require('../config/logger');
+const { initializeModels } = require('../models');
+const config = require('./config');
+const envConfig = require('./sequelize-cli.config')[config.env];
 
 const sequelize = new Sequelize(
-  config.postgresDb,
-  config.postgresUser,
-  config.postgresPassword,
+  envConfig.database,  
+  envConfig.username,
+  envConfig.password,
   {
-    host: config.postgresHost,
-    port: config.postgresPort,
-    dialect: "postgres",
-    logging: false, // Disable SQL log spam in development
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
-    },
-  }
+    host: envConfig.host,
+    port: envConfig.port,
+    dialect: envConfig.dialect,
+    logging: false,
+    pool: envConfig.pool,
+    dialectOptions: envConfig.dialectOptions,  
+  },
+  
 );
 
-module.exports = sequelize;
+initializeModels(sequelize);
+
+// Connection management
+const connectDB = async () => {
+  try {
+    await sequelize.authenticate();
+    logger.info('Database connection established');
+
+    return sequelize;
+  } catch (error) {
+    logger.error(error);
+  }
+};
+// Connection closure
+const closeDB = async () => {
+  try {
+    await sequelize.close();
+    logger.info('Database connection closed');
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
+module.exports = { connectDB, closeDB };
