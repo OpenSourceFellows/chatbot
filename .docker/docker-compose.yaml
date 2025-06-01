@@ -7,7 +7,7 @@ services:
     environment:
       - DB_HOST=${POSTGRES_HOST}  # Matches db service hostname
     ports: 
-      - 7000:7000
+      - 7001:7000
     volumes:
       - type: bind
         source: "../"

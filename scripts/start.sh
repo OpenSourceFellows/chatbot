@@ -13,7 +13,7 @@ echo "Setting up container..."
 set_git_info
 
 echo "1/2: Spinning up container..."
-docker compose -f .docker/docker-compose.yml up -d
+docker compose -f .docker/docker-compose.yaml up -d
 
 echo "2/2: Entering container..."
 docker exec -it chatbot_server /bin/sh
