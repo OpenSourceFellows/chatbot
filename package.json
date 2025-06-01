@@ -21,7 +21,8 @@
       "db:migrate:test": "NODE_ENV=test pnpm db:migrate",
       "db:generate-migration": "sequelize migration:generate",
       "db:undo-migration": "sequelize db:migrate:undo",
-      "db:rollback-migrations": "sequelize db:migrate:undo:all"
+      "db:rollback-migrations": "sequelize db:migrate:undo:all",
+      "postinstall": "chmod +x ./scripts/*.sh"
     },
     "dependencies": {
       "auth0": "^2.42.0",
