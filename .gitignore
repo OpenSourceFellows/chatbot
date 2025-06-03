@@ -1,6 +1,6 @@
 node_modules
 .pnpm-store
-.env.example
+.env
 logs
 .docker/.env
 .dockerignore
