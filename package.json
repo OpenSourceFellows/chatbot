@@ -24,6 +24,9 @@
         "db:rollback-migrations": "sequelize db:migrate:undo:all",
         "postinstall": "chmod +x ./scripts/*.sh"
     },
+    "engines": {
+        "node": ">20.19.2"
+    },
     "dependencies": {
         "auth0": "^2.42.0",
         "bcrypt": "^5.1.1",
