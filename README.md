@@ -27,6 +27,9 @@ Still at the root of your project, locate the `.docker` folder and copy the cred
 
 Starting this project for the first time, at the root of the project ```/chatbot_server```, run the following commands in the terminal in the following order:
 ```
+pnpm install
+```
+```
 ./scripts/rebuild.sh
 ``` 
 
