@@ -13,7 +13,11 @@ ADD package.json   ${WORKDIR}
 ADD pnpm-lock.yaml ${WORKDIR}
 
 # Install dependencies (with fallback)
-RUN pnpm install --prod || (rm pnpm-lock.yaml && pnpm install --prod)
+RUN pnpm install
+
+COPY . .
+
+RUN chmod +x ./scripts/*.sh || true
 # Set up git
 RUN apk add git
 ADD git-config.txt ${WORKDIR}
