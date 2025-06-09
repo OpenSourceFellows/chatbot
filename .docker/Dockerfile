@@ -7,17 +7,20 @@ RUN corepack use pnpm@*
 ARG WORKDIR=/chatbot_server
 WORKDIR ${WORKDIR}
 
-# Adding package.json first will cache our dependencies so
-# that they do not have to be re-installed when the image rebuilds
+# Add only package files for caching dependencies
 ADD package.json   ${WORKDIR}
 ADD pnpm-lock.yaml ${WORKDIR}
+ADD scripts/ /chatbot_server/scripts/
 
-# Install dependencies (with fallback)
+# Install dependencies
 RUN pnpm install
 
+# Now copy the rest of the source files (including scripts/)
 COPY . .
 
+# Now chmod scripts - scripts/ exists now
 RUN chmod +x ./scripts/*.sh || true
+
 # Set up git
 RUN apk add git
 ADD git-config.txt ${WORKDIR}

@@ -20,7 +20,7 @@ services:
         condition: service_healthy
 
   chatbot_db:
-    hostname: postgres  # Explicit hostname
+    hostname: localhost  # Explicit hostname
     image: postgres:15-alpine
     container_name: chatbot_db
     ports:
