@@ -6,6 +6,7 @@ RUN corepack use pnpm@*
 
 ARG WORKDIR=/chatbot_server
 WORKDIR ${WORKDIR}
+ADD scripts/ ${WORKDIR}/scripts/
 
 # Adding package.json first will cache our dependencies so
 # that they do not have to be re-installed when the image rebuilds
