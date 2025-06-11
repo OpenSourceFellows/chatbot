@@ -1,3 +1,5 @@
+const twilioClient = require('../../config/twilio')
+
 const SOURCES = {
   TWILIO: 'twilio',
   OPENEDX: 'openedx'
@@ -33,14 +35,8 @@ async function handleIncomingMessage(req, res, next) {
 async function processMessage(req, requestId) {
   let source = identifySource(req)
 
-  try {
-    source = identifySource(req)
-  } catch (error) {
-    throw new Error("Could not validate message authenticity");
-  }
-
   if (source === SOURCES.TWILIO) {
-    verifyTwilioSignature(req)
+    twilioClient.webhook()(req)
 
     logger.info("Received Twilio Message", {
       requestId,
@@ -64,24 +60,4 @@ function identifySource(req) {
   }
 
   throw new Error("Could not identify source");
-}
-
-function verifyAuthenticity(req, source) {
-  switch (source) {
-    case SOURCES.TWILIO: 
-      return verifyTwilioSignature(req)
-    default:
-      throw new Error("Could not identify source")
-  }
-}
-
-function verifyTwilioSignature(req) {
-  const twilioSignature = req.headers['x-twilio-signature']
-  const authToken = process.env.TWILIO_AUTH_TOKEN
-
-  if (!twilioSignature || !authToken) {
-    throw new Error('Missing Twilio signature or auth token')
-  }
-
-  // TODO: Determine strategy for validating twilio signature against auth token
 }
