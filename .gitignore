@@ -1,4 +1,8 @@
 node_modules
+.pnpm-store
 .env
 logs
+.docker/.env
 .dockerignore
+git-config.txt
+.env.local

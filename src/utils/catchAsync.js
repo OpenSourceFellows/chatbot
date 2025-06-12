@@ -1,5 +1,17 @@
-const catchAsync = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch((err) => next(err));
-};
-
-module.exports = catchAsync;
+class ApiError extends Error {
+    constructor(statusCode, message, isOperational = true, stack = '') {
+      super(message);
+  
+      if (stack) {
+        this.stack = stack;
+      } else {
+        Error.captureStackTrace(this, this.constructor);
+      }
+      
+      this.statusCode = statusCode;
+      this.isOperational = isOperational;
+    }
+  }
+  
+  module.exports = ApiError;
+  

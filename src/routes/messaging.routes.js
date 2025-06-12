@@ -6,3 +6,8 @@ const { handleIncomingMessage } = require('../services/messaging/incoming.messag
 
 router.post('/webhook/incoming-message', handleIncomingMessage)
 
+router.get('/', (req, res) => {
+  res.send('📨 Messaging API is working');
+});
+
+module.exports = router;

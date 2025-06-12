@@ -4,7 +4,7 @@ const envVarSchema = joi
   .object({
     // App Configuration
     NODE_ENV: joi.string().valid('development', 'production', 'test').default('development'),
-    PORT: joi.number().positive().default(3000),
+    PORT:joi.number().positive().default(3001),
     APP_URL: joi.string().uri().required(),
 
     // Database

@@ -1,22 +1,24 @@
-const mongoose = require('mongoose');
 const http = require('http');
-const config = require('./config/config');
-const app = require('./server');
-const logger = require('./config/logger');
-mongoose
-  .connect(config.dbConnection)
-  .then(() => {
-    logger.info('connected to mongodb');
-  })
-  .catch((err) => {
-    logger.error(err);
-  });
+const config = require('./src/config/config');
+const { connectDB, closeDB } = require('./src/config/database');
+const logger = require('./src/config/logger');
+const app = require('./src/server');
+
+try {
+  connectDB();
+} catch (error) { 
+  logger.info(error);
+}
 
 const httpServer = http.createServer(app);
+
 const server = httpServer.listen(config.port, () => {
   logger.info(`server listening on port ${config.port}`);
 });
-const exitHandler = () => {
+
+const exitHandler = async () => {
+  await closeDB();
+
   if (server) {
     server.close(() => {
       logger.info('Server closed');
@@ -33,8 +35,10 @@ const unExpectedErrorHandler = (error) => {
 
 process.on('uncaughtException', unExpectedErrorHandler);
 process.on('unhandledRejection', unExpectedErrorHandler);
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM recieved');
+process.on('SIGTERM', async() => {
+  await closeDB();
+  logger.info('SIGTERM received');
+
   if (server) {
     server.close();
   }
