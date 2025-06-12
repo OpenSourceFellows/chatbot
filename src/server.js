@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser')
 const app = express();
 const chatbotRouter = require('./routes/chatbot.route');
 const messagingRouter = require('./routes/messaging.routes')
@@ -8,7 +7,7 @@ const ApiError = require('./utils/ApiError');
 const httpStatus = require('http-status');
 const morgan = require('./config/morgan');
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }))
 
 app.use(morgan.successHandler);
 app.use(morgan.errorHandler);
