@@ -1,1 +1,2 @@
-module.exports.authService = require('./auth/auth.service');
+module.exports.blogService = require('./blog.service');
+module.exports.messagingService = require('./messaging/messaging.service')
