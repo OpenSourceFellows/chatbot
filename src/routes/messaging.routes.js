@@ -1,8 +1,8 @@
 const express = require('express')
+const messagingController = require('../controllers')
+
 const router = express.Router()
-const logger = require('../config/logger')
-const { handleIncomingMessage } = require('../services/messaging/incoming.messages.service')
+router.post('/webhook/incoming-message', messagingController.handleIncomingMessage)
 
-
-router.post('/webhook/incoming-message', handleIncomingMessage)
+module.exports = router;
 
