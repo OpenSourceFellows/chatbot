@@ -1,17 +1,15 @@
-class ApiError extends Error {
-  constructor(statusCode, message, isOperational = true, stack = '') {
-    super(message);
-  
-    if (stack) {
-      this.stack = stack;
-    } else {
-      Error.captureStackTrace(this, this.constructor);
-    }
-      
-    this.statusCode = statusCode;
-    this.isOperational = isOperational;
-  }
+/**
+ * Utility function to wrap async Express route handlers
+ * Catches async errors and passes them to Express error handling middleware
+ * @param {Function} fn - Async function to wrap
+ * @returns {Function} Express middleware function
+ */
+function catchAsync(fn) {
+  return (req, res, next) => {
+    // Execute the async function and catch any errors
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 }
   
-module.exports = ApiError;
+module.exports = catchAsync;
   

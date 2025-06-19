@@ -2,7 +2,14 @@ const { Sequelize } = require('sequelize');
 const logger = require('../config/logger');
 const { initializeModels } = require('../models');
 const config = require('./config');
-const envConfig = require('./sequelize-cli.config')[config.env];
+
+// Load configuration
+const env = config.env || 'development';
+const envConfig = require('./sequelize-cli.config')[env];
+
+if (!envConfig) {
+  logger.error(`No database config found for environment: ${env}`);
+}
 
 const sequelize = new Sequelize(
   envConfig.database,  
