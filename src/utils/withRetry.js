@@ -9,30 +9,41 @@ const logger = require('../config/logger');
  */
 
 /**
+ * @typedef {Record} RetryOptions
+ * @param {number} [maxAttempts=3] - Maximum number of retry attempts
+ * @param {number} [baseDelay=1000] - Base delay in milliseconds
+ * @param {number} [maxDelay=30000] - Maximum delay in milliseconds
+ * @param {Function} [shouldRetry] - Predicate function to determine if error should trigger retry
+ * @param {Function} [onRetry] - Callback executed on each retry attempt
+ */
+const defaultOptions = {
+  maxAttempts: 3,
+  baseDelay: 1000,
+  maxDelay: 30000,
+  shouldRetry: error => error.isClientError,
+  onRetry: (attempt, error) => logger.warn(`Retry attempt ${attempt}`, error.message)
+};
+
+/**
  * 
  * @param {AsyncExpressHandler} fn 
- * @param {number} [options.maxAttempts=3] - Maximum number of retry attempts
- * @param {number} [options.baseDelay=1000] - Base delay in milliseconds
- * @param {number} [options.maxDelay=30000] - Maximum delay in milliseconds
- * @param {Function} [options.shouldRetry] - Predicate function to determine if error should trigger retry
- * @param {Function} [options.onRetry] - Callback executed on each retry attempt
+ * @param {RetryOptions} options
  * @returns 
  */
 function withRetry(fn, options = {}) {
-  const {
-    maxAttempts = 3,
-    baseDelay = 1000,
-    maxDelay = 30000,
-    shouldRetry = (error) => !error.isClientError,
-    onRetry = (attempt, error) => logger.warn(`Retry attempt ${attempt}:`, error.message)
-  } = options;
 
-  return async (...args) => {
+  const maxAttempts = options.maxAttempts || defaultOptions.maxAttempts;
+  const baseDelay = options.baseDelay || defaultOptions.baseDelay;
+  const maxDelay = options.maxDelay || defaultOptions.maxDelay;
+  const shouldRetry = options.shouldRetry || defaultOptions.shouldRetry;
+  const onRetry = options.onRetry || defaultOptions.onRetry;
+
+  return async (req, res, next) => {
     let lastError;
     
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        return await fn(...args);
+        return await fn(req, res, next);
       } catch (error) {
         lastError = error;
         

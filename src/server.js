@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 const httpStatus = require('http-status');
 const morgan = require('./config/morgan');

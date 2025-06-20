@@ -1,11 +1,11 @@
 const logger = require('../config/logger');
 const messagingService = require('../services');
-const catchAsync = require('../utils/catchAsync');
-const withRetry = require('../utils/withRetry');
+const { withRetryAndCatch } = require('../utils/withRetry');
 
 /**
- * @function handleIncomingMessage
- * @typedef {import('../utils/withRetry').AsyncExpressHandler}
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {import('express').NextFunction} next
  */
 async function handleIncomingMessage(req, res, next) {
   const startTime = Date.now();
@@ -39,6 +39,5 @@ async function handleIncomingMessage(req, res, next) {
   next(); 
 }
 
-const withRetryAndCatch = (options = {}) => (fn) => catchAsync(withRetry(fn, options));
-
+//TODO: Configure retry options, logging, logic for retry, client error handling, etc.
 module.exports = { handleIncomingMessage: withRetryAndCatch()(handleIncomingMessage) };
