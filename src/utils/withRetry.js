@@ -31,7 +31,6 @@ const defaultOptions = {
  * @returns 
  */
 function withRetry(fn, options = {}) {
-
   const maxAttempts = options.maxAttempts || defaultOptions.maxAttempts;
   const baseDelay = options.baseDelay || defaultOptions.baseDelay;
   const maxDelay = options.maxDelay || defaultOptions.maxDelay;

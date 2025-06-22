@@ -5,9 +5,9 @@ const { withRetryAndCatch } = require('../utils/withRetry');
 /**
  * @param {Express.Request} req
  * @param {Express.Response} res
- * @param {import('express').NextFunction} next
+ * @param {import('express').NextFunction} _next
  */
-async function handleIncomingMessage(req, res, next) {
+async function handleIncomingMessage(req, res) {
   const startTime = Date.now();
   const requestId = req.headers['x-request-id'] || `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
@@ -30,13 +30,12 @@ async function handleIncomingMessage(req, res, next) {
     source: result.source,
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     requestId,
     message: 'Message processed successfully',
     processingTime
   });
-  next(); 
 }
 
 //TODO: Configure retry options, logging, logic for retry, client error handling, etc.
