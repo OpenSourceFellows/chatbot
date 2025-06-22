@@ -26,7 +26,6 @@ async function handleIncomingMessage(req, res) {
   logger.info('Webhook request processed successfully', {
     requestId,
     processingTime,
-    messageType: result.messageType,
     source: result.source,
   });
 

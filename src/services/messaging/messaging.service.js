@@ -29,6 +29,10 @@ function processMessage(req, requestId) {
     });
     // TODO: send to appropriate OpenEdx handler
   }
+
+  return {
+    source
+  };
 }
 
 function identifySource(req) {
