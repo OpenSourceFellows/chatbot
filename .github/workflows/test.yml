@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -32,7 +32,9 @@ jobs:
           tags: test-chatbot
           outputs: type=docker
 
-      - name: Run linter
+      - name: Run tests
+        env:
+            DOCKER_BUILDKIT: 0
         run: |
           docker run --rm --memory=1g \
           -v ${{ github.workspace }}:/chatbot_server \
