@@ -21,6 +21,6 @@ COPY . .
 RUN chmod +x ./scripts/*.sh || true
 # Set up git
 RUN apk add git
-ADD git-config.txt ${WORKDIR}
+COPY git-config.txt ${WORKDIR}
 
 EXPOSE 7000
