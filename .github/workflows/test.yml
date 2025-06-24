@@ -30,8 +30,6 @@ jobs:
           context: .
           file: .docker/Dockerfile
           tags: test-chatbot
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           outputs: type=docker
 
       - name: Run linter
@@ -39,5 +37,5 @@ jobs:
           docker run --rm --memory=1g \
           -v ${{ github.workspace }}:/chatbot_server \
           -w /chatbot_server \
-          lint-chatbot-server \
+          test-chatbot \
           sh -c "pnpm install --frozen-lockfile && pnpm test"
