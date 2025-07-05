@@ -9,7 +9,22 @@ module.exports = {
     host: config.postgresHost || 'postgres',
     port: config.postgresPort,
     dialect: 'postgres',
-    logging: config.env === 'development' ? logger.info('development') : false,
+    logging: config.env === 'development' ? logger.info : false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  },
+  test: {  // Add this test environment configuration
+    username: config.postgresUser,
+    password: config.postgresPassword,
+    database: config.postgresDb,  
+    host: config.postgresHost || 'postgres',
+    port: config.postgresPort,
+    dialect: 'postgres',
+    logging: false,  // Disable logging during tests
     pool: {
       max: 5,
       min: 0,
@@ -34,13 +49,11 @@ module.exports = {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false // For self-signed certificates
+        rejectUnauthorized: false
       },
-      // For connection timeouts
       connectTimeout: 60000,
       keepAlive: true
     },
-    // Heroku and other cloud providers often use this
     ...(config.dbUrl ? { url: config.dbUrl } : {})
   }
 };
