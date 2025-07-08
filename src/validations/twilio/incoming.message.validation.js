@@ -21,7 +21,7 @@ function validatePhoneNumber(value, helpers) {
  * 
  * @param {String} value 
  * @param {import('joi').CustomHelpers} helpers 
- * @returns {import('joi').ErrorReport|String }
+ * @returns {import('joi').ErrorReport|String}
  */
 function validateSafeString(value, helpers) {
   // Check for common SQL injection patterns
