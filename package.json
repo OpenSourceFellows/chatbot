@@ -23,8 +23,7 @@
         "db:migrate:test": "node .jest/jest.global-setup.js",
         "db:generate-migration": "sequelize migration:generate",
         "db:undo-migration": "sequelize db:migrate:undo",
-        "db:rollback-migrations": "sequelize db:migrate:undo:all",
-        "postinstall": "chmod +x ./scripts/*.sh"
+        "db:rollback-migrations": "sequelize db:migrate:undo:all"
     },
     "engines": {
         "node": ">20.19.2"
