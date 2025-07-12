@@ -4,7 +4,7 @@
 
 ### Creating a database
 
-Once your dev containers are running and you are inside the container, it is easy to create a development database.
+Once your dev containers are running and you are inside the chatbot_server container, it is easy to create a development database.
 
 First, install dependencies.
 

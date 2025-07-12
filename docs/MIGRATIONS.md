@@ -18,7 +18,7 @@ Change the new migration's file extension to `.cjs`.
 202405121234-test.js ==> 202405121234-test.cjs
 ```
 
-`*.js` files are set up to have a linting error if we use CommonJS style imports and exports, so `*.cjs` is used be explicit about the fact that we are using a different workflow from the rest of the project.
+`*.js` files are set up to have a linting error if we use CommonJS style imports and exports, so `*.cjs` is used to be explicit about the fact that we are using a different workflow from the rest of the project.
 
 ## Adding Schema Changes
 
