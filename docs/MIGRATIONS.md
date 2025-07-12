@@ -24,7 +24,7 @@ Change the new migration's file extension to `.cjs`.
 
 Below is the body of a sample migration to use as an example. Note that
 the underlying Postgresql table should have **snake_cased** column names,
-but that the table attributes should be **camelCase**. There is currently no way to appropriately set the table to handle auto-updating the `created_at` timestamp, but our models will take of it automatically.
+but that the table attributes should be **camelCase**.
 
 See the [Sequelize Docs](https://sequelize.org/) for more examples and info on adding indexes, etc.
 

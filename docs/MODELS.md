@@ -5,9 +5,10 @@ Models are the way that we interact with our chatbot_server's underlying databas
 First, create a new model in `src/models`.
 
 ```bash
-touch src/models myModel.js(the name of your model) # Models should be camelCase
+touch src/models/myModel.js 
 ```
-
+<!-- Models should be camelCase -->
+ 
 Second, create the model in the following format
 
 ```javascript
