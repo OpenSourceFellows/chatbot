@@ -1,46 +1,6 @@
 const joi = require('joi');
-
-/**
- * 
- * @param {String} value 
- * @param {import('joi').CustomValidator} helpers 
- * @returns {import('joi').ErrorReport|String}
- */
-function validatePhoneNumber(value, helpers) {
-  // Must start with + and have 10-15 digits after
-  const phoneRegex = /^\+[1-9]\d{1,14}$/;
- 
-  if (!phoneRegex.test(value)) {
-    return helpers.error('any.invalid');
-  }
-  
-  return value;
-};
-
-/**
- * 
- * @param {String} value 
- * @param {import('joi').CustomHelpers} helpers 
- * @returns {import('joi').ErrorReport|String}
- */
-function validateSafeString(value, helpers) {
-  // Check for common SQL injection patterns
-  const dangerousPatterns = [
-    /('|(\\?')|(;|\\?;))/i,  // Single quotes and semicolons
-    /--(\\s|$)/i,            // SQL comments
-    /\b(DROP|DELETE|INSERT|UPDATE|SELECT|UNION|CREATE|ALTER|EXEC|EXECUTE)\b/i, // SQL keywords
-    /<script/i,              // Basic XSS
-    /javascript:/i           // JavaScript protocol
-  ];
-  
-  for (const pattern of dangerousPatterns) {
-    if (pattern.test(value)) {
-      return helpers.error('string.unsafe');
-    }
-  }
-  
-  return value;
-};
+const validatePhoneNumber = require('../../utils/validatePhoneNumber');
+const validateSafeString = require('../../utils/validateSafeString');
 
 // Twilio SMS payload validation schema
 const twilioIncomingMessageSchema = joi.object({
@@ -148,4 +108,8 @@ const twilioIncomingMessageSchema = joi.object({
     'object.unknown': 'Unknown field "{#label}" is not allowed'
   });
 
-module.exports = twilioIncomingMessageSchema;
+const twilioIncomingMessageRequestSchema = joi.object({
+  body: twilioIncomingMessageSchema
+});
+
+module.exports = twilioIncomingMessageRequestSchema;

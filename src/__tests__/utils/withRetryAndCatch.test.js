@@ -11,8 +11,7 @@ describe('withRetryAndCatch', () => {
     jest.resetModules();
     jest.doMock('../../utils/withRetry', () => {
       return jest.fn((fn) => {
-        // Just return the handler as-is for test purposes
-
+        // Return the handler as-is for test purposes
         return fn;
       });
     });
@@ -24,17 +23,14 @@ describe('withRetryAndCatch', () => {
           const maybePromise = fn(...args);
 
           if (maybePromise && typeof maybePromise.catch === 'function') {
-
             return maybePromise.catch(next);
           }
 
           return maybePromise;
         } catch (err) {
           if (typeof next === 'function') {
-
             next(err);
           } else {
-
             throw err;
           }
         }
@@ -256,7 +252,9 @@ describe('withRetryAndCatch', () => {
 
     it('should work with async/await handlers', async () => {
       const asyncHandler = jest.fn(async (req, res) => {
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise(resolve => {
+          setTimeout(() => resolve(), 10);
+        });
 
         return { processed: true };
       });
