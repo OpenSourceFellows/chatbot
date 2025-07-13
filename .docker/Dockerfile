@@ -26,3 +26,5 @@ RUN apk add git
 ADD git-config.txt ${WORKDIR}
 
 EXPOSE 7000
+
+CMD ['node', 'index.js']
