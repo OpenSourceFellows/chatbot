@@ -6,6 +6,7 @@ RUN corepack use pnpm@*
 
 ARG WORKDIR=/chatbot_server
 WORKDIR ${WORKDIR}
+COPY scripts/ ${WORKDIR}/scripts/
 
 # Adding package.json first will cache our dependencies so
 # that they do not have to be re-installed when the image rebuilds
@@ -20,6 +21,7 @@ COPY . .
 RUN chmod +x ./scripts/*.sh || true
 # Set up git
 RUN apk add git
-ADD git-config.txt ${WORKDIR}
+
+RUN if [ -f git-config.txt ]; then cp git-config.txt ~/.gitconfig; fi
 
 EXPOSE 7000
