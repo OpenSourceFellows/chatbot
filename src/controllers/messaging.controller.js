@@ -1,6 +1,6 @@
 const logger = require('../config/logger');
 const messagingService = require('../services');
-const { withRetryAndCatch } = require('../utils/withRetry');
+const withRetryAndCatch = require('../utils/withRetryAndCatch');
 
 /**
  * @param {Express.Request} req
