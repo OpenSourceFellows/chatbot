@@ -4,10 +4,9 @@ const app = express();
 const httpStatus = require('http-status');
 const morgan = require('./config/morgan');
 const { errorHandler, errorConverter } = require('./middlewares/error');
-
+const chatbotRouter = require('./routes/chatbot.routes');
 
 const authRoutes = require('./routes/auth.routes');
-const chatbotRouter = require('./routes/chatbot.route');
 const edxRoutes = require('./routes/edx.routes');
 
 const messagingRouter = require('./routes/messaging.routes');

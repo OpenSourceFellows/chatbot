@@ -1,6 +1,9 @@
+const { env } = require('../../config/config');
 const logger = require('../../config/logger');
 const twilioClient = require('../../config/twilio');
 const SOURCES = require('../../utils/constants');
+
+const shouldValidate = env !== 'test';
 
 /**
  * 
@@ -11,7 +14,7 @@ function processMessage(req, requestId) {
   const source = identifySource(req);
 
   if (source === SOURCES.TWILIO) {
-    twilioClient.webhook()(req);
+    twilioClient.webhook({ validate: shouldValidate })(req);
 
     logger.info('Received Twilio Message', {
       requestId,

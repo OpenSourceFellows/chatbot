@@ -1,11 +1,12 @@
 const { pool } = require('../../config/database');
+const logger = require('../../config/logger');
 
 async function connectDB() {
   try {
     await pool.query('SELECT NOW()');
-    console.log('PostgreSQL connected');
+    logger.log('PostgreSQL connected');
   } catch (error) {
-    console.error('PostgreSQL connection error', error);
+    logger.error('PostgreSQL connection error', error);
     process.exit(1);
   }
 }
