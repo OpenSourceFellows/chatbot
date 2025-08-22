@@ -1,84 +1,200 @@
 # Chatbot Server
 
-This repository houses the source code for the Chatbot backend. It uses NodeJS.
+A Node.js-based chatbot server with AI integration, Twilio messaging support, and EdX API integration.
 
-## Recommended IDE Setup
+## Features
 
-We **highly** recommend [VS Code](https://code.visualstudio.com/) for its great plugins. 
+- 🤖 AI-powered chatbot using OpenAI
+- 📱 Twilio SMS integration
+- 🎓 EdX API integration for course management
+- 🔐 Auth0 authentication
+- 🗄️ PostgreSQL database with Sequelize ORM
+- 🧪 Comprehensive testing with Jest
+- 🐳 Docker support for easy development
+- 📝 API documentation
 
-## Running the App
+## Prerequisites
 
-Using Docker is the best way to run the app for development. **Please use only pnpm to run the project or handle dependencies!** Different tools like `yarn` and `npm` are not interoperable with `pnpm` (or each other) and will cause problems when intermingled.
+- Node.js 20.19.2 or higher
+- PostgreSQL 15 or higher
+- Docker and Docker Compose (for containerized development)
+- pnpm package manager
 
-Ensure you have wsl environment installed for those using windows pc, if not install from [here](https://learn.microsoft.com/en-us/windows/wsl/install).
+## Quick Start
 
-Ensure you have Docker Desktop installed and running on your machine, if not install from [here](https://docs.docker.com/desktop/).
-
-At the project here on github, click on the code button and copy the link from the https tab.
-
-Navigate to the where you want to clone your project in the wsl environment on the terminal and enter the command `git clone https://github.com/OpenSourceFellows/chatbot.git`.
-
-cd into project ``` cd chatbot_server ```
-
-Open the project from your terminal using command ` code .`
-
-At the root of your project you would find a `.env.example` file. Copy the creds in that file into a `.env` file.
-Still at the root of your project, locate the `.docker` folder and copy the creds in its .env.example file into another .env file within the .docker folder.
-
-Starting this project for the first time, at the root of the project ```/chatbot_server```, run the following commands in the terminal in the following order:
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd chatbot
 ```
+
+### 2. Install dependencies
+```bash
 pnpm install
 ```
-```
-./scripts/rebuild.sh
-``` 
 
-to build the docker containers for our project.
+### 3. Environment Setup
+Copy the environment example files and configure them:
 
+```bash
+cp env.example .env
+cp docker.env.example .docker/.env
 ```
-./scripts/start.sh
-``` 
 
-to run our container and allow us to enter into the project.
+Edit `.env` and `.docker/.env` with your actual configuration values.
 
-Once inside, run
-```
-pnpm install
-```
-to install node packages and then run
+### 4. Database Setup
+```bash
+# Create database
+pnpm db:create
 
+# Run migrations
+pnpm db:migrate
+
+# Seed with demo data (optional)
+pnpm db:seed:all
 ```
+
+### 5. Start the server
+```bash
+# Development mode
 pnpm dev
-```
-to start the development server. The app will run on port 7000 so make sure that is available on your local machine or you probably won't be able to access the app in your browser.
 
-To exit the conainer, shut down the dev server with `ctrl + c` and you can just type `exit`.
-
-To shut down the container, use
+# Production mode
+pnpm serve
 ```
+
+## Docker Development
+
+For containerized development:
+
+```bash
+# Build and start containers
+./scripts/rebuild.sh
+./scripts/start.sh
+
+# Stop containers
 ./scripts/stop.sh
 ```
-You may need to rebuild the container from time to time and can do that with
-```
-./scripts/rebuild.sh
-```
+
+## API Endpoints
+
+### Chatbot
+- `POST /chatbot/message` - Send a message to the chatbot
+- `GET /chatbot/history` - Get chat history
+- `GET /chatbot/health` - Health check
+
+### Messaging
+- `POST /messaging/webhook/incoming-message` - Twilio webhook
+- `GET /messaging` - Messaging service status
+
+### Authentication
+- `GET /auth/login` - Login endpoint
+
+### EdX Integration
+- `GET /edx/courses` - Get available courses
 
 ## Testing
-We use jest for testing. You can start this with
-```
+
+```bash
+# Run all tests
 pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Run tests in verbose mode
+pnpm test:verbose
+```
+
+## Database Management
+
+```bash
+# Create database
+pnpm db:create
+
+# Generate model
+pnpm db:create-model
+
+# Generate migration
+pnpm db:generate-migration
+
+# Run migrations
+pnpm db:migrate
+
+# Undo last migration
+pnpm db:undo-migration
+
+# Rollback all migrations
+pnpm db:rollback-migrations
+
+# Drop database
+pnpm db:drop
 ```
 
 ## Linting
-We use eslint for strong linting practices for this project and you can check if your code meets the standard by running
-```
 
+```bash
+# Check code quality
 pnpm lint
-```
-and run
 
-```
-
+# Auto-fix issues
 pnpm lint:fix
 ```
-to auto fix common errors.
+
+## Project Structure
+
+```
+src/
+├── config/          # Configuration files
+├── controllers/     # Request handlers
+├── middlewares/     # Express middlewares
+├── models/          # Database models
+├── routes/          # API routes
+├── services/        # Business logic
+├── utils/           # Utility functions
+└── validations/     # Input validation schemas
+```
+
+## Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `NODE_ENV` | Environment | No | `development` |
+| `PORT` | Server port | No | `3001` |
+| `APP_URL` | Application URL | Yes | - |
+| `POSTGRES_HOST` | Database host | Yes | - |
+| `POSTGRES_PORT` | Database port | No | `5432` |
+| `POSTGRES_USER` | Database user | Yes | - |
+| `POSTGRES_PASSWORD` | Database password | Yes | - |
+| `POSTGRES_DB` | Database name | Yes | - |
+| `AUTH0_DOMAIN` | Auth0 domain | Yes | - |
+| `AUTH0_CLIENT_ID` | Auth0 client ID | Yes | - |
+| `AUTH0_CLIENT_SECRET` | Auth0 client secret | Yes | - |
+| `AUTH0_AUDIENCE` | Auth0 audience | Yes | - |
+| `AUTH0_ISSUER_BASE_URL` | Auth0 issuer URL | Yes | - |
+| `TWILIO_ACCOUNT_SID` | Twilio account SID | Yes | - |
+| `TWILIO_AUTH_TOKEN` | Twilio auth token | Yes | - |
+| `TWILIO_PHONE_NUMBER` | Twilio phone number | Yes | - |
+| `EDX_API_KEY` | EdX API key | Yes | - |
+| `EDX_API_URL` | EdX API URL | Yes | - |
+| `EDX_CLIENT_ID` | EdX client ID | Yes | - |
+| `EDX_CLIENT_SECRET` | EdX client secret | Yes | - |
+| `AI_API_KEY` | OpenAI API key | Yes | - |
+| `AI_MODEL` | AI model to use | No | `gpt-4` |
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass
+6. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.

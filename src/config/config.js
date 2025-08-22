@@ -2,10 +2,21 @@ require('dotenv').config();
 const { envValidation } = require('./../validations');
 const logger = require('./logger');
 
-const { value: envVars, error } = envValidation.validate(process.env);
+let envVars;
+let validationError;
 
-if (error) {
-  logger.error(error);
+try {
+  const result = envValidation.validate(process.env);
+  envVars = result.value;
+  validationError = result.error;
+} catch (error) {
+  logger.error('Environment validation failed:', error);
+  process.exit(1);
+}
+
+if (validationError) {
+  logger.error('Environment validation errors:', validationError.details);
+  process.exit(1);
 }
 
 module.exports = {
@@ -32,10 +43,8 @@ module.exports = {
   // edx config
   edxApiKey: envVars.EDX_API_KEY,
   edxApiUrl: envVars.EDX_API_URL,
-  edxClientId: envVars.EDX_API_URL,
+  edxClientId: envVars.EDX_CLIENT_ID,
   edxClientSecret: envVars.EDX_CLIENT_SECRET,
   aiApiKey: envVars.AI_API_KEY,
   aiModel: envVars.AI_MODEL,
-  // dbConnection: envVars.DB_CONNECTION,
-
 };

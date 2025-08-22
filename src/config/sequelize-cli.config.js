@@ -1,15 +1,14 @@
-const config = require('./config');
-const logger = require('./logger');
+require('dotenv').config();
 
 module.exports = {
   development: {
-    username: config.postgresUser,
-    password: config.postgresPassword,
-    database: config.postgresDb,
-    host: config.postgresHost || 'postgres',
-    port: config.postgresPort,
+    username: process.env.POSTGRES_USER || 'postgres',
+    password: process.env.POSTGRES_PASSWORD || 'password',
+    database: process.env.POSTGRES_DB || 'chatbot_dev',
+    host: process.env.POSTGRES_HOST || 'localhost',
+    port: process.env.POSTGRES_PORT || 5432,
     dialect: 'postgres',
-    logging: config.env === 'development' ? logger.info : false,
+    logging: process.env.NODE_ENV === 'development' ? console.log : false,
     pool: {
       max: 5,
       min: 0,
@@ -17,14 +16,14 @@ module.exports = {
       idle: 10000
     }
   },
-  test: {  // Add this test environment configuration
-    username: config.postgresUser,
-    password: config.postgresPassword,
-    database: config.postgresDb,  
-    host: config.postgresHost || 'postgres',
-    port: config.postgresPort,
+  test: {
+    username: process.env.POSTGRES_USER || 'postgres',
+    password: process.env.POSTGRES_PASSWORD || 'password',
+    database: process.env.POSTGRES_DB || 'chatbot_test',
+    host: process.env.POSTGRES_HOST || 'localhost',
+    port: process.env.POSTGRES_PORT || 5432,
     dialect: 'postgres',
-    logging: false,  // Disable logging during tests
+    logging: false,
     pool: {
       max: 5,
       min: 0,
@@ -33,11 +32,11 @@ module.exports = {
     }
   },
   production: {
-    username: config.postgresUser,
-    password: config.postgresPassword,
-    database: config.postgresDb,
-    host: config.postgresHost,
-    port: config.postgresPort,
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT || 5432,
     dialect: 'postgres',
     logging: false,
     pool: {
@@ -53,7 +52,6 @@ module.exports = {
       },
       connectTimeout: 60000,
       keepAlive: true
-    },
-    ...(config.dbUrl ? { url: config.dbUrl } : {})
+    }
   }
 };

@@ -1,40 +1,28 @@
-const joi = require('joi');
+const Joi = require('joi');
 
-// Define specific schemas later — here's a placeholder
-// https://docs.openedx.org/projects/openedx-events/en/latest/how-tos/create-a-new-event.html
-const courseEnrollmentSchema = joi.object({
-  user_id: joi.string().required(),
-  course_id: joi.string().required(),
-  mode: joi.string().valid('audit', 'honor', 'verified', 'professional').required(),
+const openedXEventSchema = Joi.object({
+  event_type: Joi.string().required(),
+  event_id: Joi.string().required(),
+  timestamp: Joi.string().isoDate().required(),
+  username: Joi.string().optional(),
+  user_id: Joi.string().optional(),
+  course_id: Joi.string().optional(),
+  org_id: Joi.string().optional(),
+  event: Joi.object().required(),
+  context: Joi.object().optional(),
+  session_id: Joi.string().optional(),
+  ip: Joi.string().ip().optional(),
+  agent: Joi.string().optional(),
+  host: Joi.string().optional(),
+  referer: Joi.string().uri().optional(),
+  accept_language: Joi.string().optional(),
+  name: Joi.string().optional(),
+  event_source: Joi.string().optional(),
+  page: Joi.string().optional(),
+  time: Joi.string().isoDate().optional(),
+  page_name: Joi.string().optional(),
+  event: Joi.object().required(),
 });
 
-const placeholderEventSchema = joi.object().unknown(true); // For now, accept any shape
-
-/**
- * See below for example JSON response
- * https://github.com/openedx/event-routing-backends/blob/master/event_routing_backends/processors/tests/fixtures/current/edx.forum.response.created.json
- */
-const openEdxEventSchema = joi.object({
-  event_type: joi.string().required(), // e.g., 'event'
-  event_name: joi.string().required(), // e.g., 'org.openedx.learning.course.enrollment.registered.v1'
-  event_source: joi.string().required(), // e.g., 'openedx.learning'
-  event_time: joi.string().isoDate().required(), // ISO8601
-  data: joi.alternatives().try(
-    courseEnrollmentSchema, // You can keep adding here
-    placeholderEventSchema // Fallback until more types are defined
-  ).required(),
-  context: joi.object({
-    user_id: joi.string().allow(null),
-    username: joi.string().allow(null),
-    course_id: joi.string().allow(null),
-    ip: joi.string().ip({ version: ['ipv4', 'ipv6'] }).allow(null)
-  }).unknown(true),
-  metadata: joi.object().unknown(true).optional()
-});
-
-const OpenEdxIncomingMessageRequestSchema = joi.object({
-  body: openEdxEventSchema
-});
-
-module.exports = OpenEdxIncomingMessageRequestSchema;
+module.exports = openedXEventSchema;
 

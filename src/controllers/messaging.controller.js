@@ -15,26 +15,44 @@ async function handleIncomingMessage(req, res) {
     requestId,
     source: req.headers['user-agent'],
     contentType: req.headers['content-type'],
-    bodySize: req.rawBody.length,
+    bodySize: JSON.stringify(req.body).length,
     timestamp: new Date().toISOString()
   });
 
-  const result = await messagingService.processMessage(req, requestId);
+  try {
+    const result = await messagingService.processMessage(req, requestId);
 
-  const processingTime = Date.now() - startTime;
+    const processingTime = Date.now() - startTime;
 
-  logger.info('Webhook request processed successfully', {
-    requestId,
-    processingTime,
-    source: result.source,
-  });
+    logger.info('Webhook request processed successfully', {
+      requestId,
+      processingTime,
+      source: result.source,
+    });
 
-  return res.status(200).json({
-    success: true,
-    requestId,
-    message: 'Message processed successfully',
-    processingTime
-  });
+    return res.status(200).json({
+      success: true,
+      requestId,
+      message: 'Message processed successfully',
+      processingTime
+    });
+  } catch (error) {
+    const processingTime = Date.now() - startTime;
+    
+    logger.error('Webhook request processing failed', {
+      requestId,
+      processingTime,
+      error: error.message,
+      stack: error.stack
+    });
+
+    return res.status(500).json({
+      success: false,
+      requestId,
+      message: 'Message processing failed',
+      processingTime
+    });
+  }
 }
 
 //TODO: Configure retry options, logging, logic for retry, client error handling, etc.

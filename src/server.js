@@ -17,6 +17,16 @@ app.use(morgan.successHandler);
 app.use(morgan.errorHandler);
 app.use(express.json());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Chatbot server is running',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 app.use('/auth', authRoutes);
 app.use('/chatbot', chatbotRouter);
